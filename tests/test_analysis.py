@@ -3,7 +3,7 @@ from pathlib import Path
 from service import analyze_log
 
 
-SAMPLE_FILE = Path(__file__).parents[1] / "examples" / "sample_auth.log"
+SAMPLE_FILE = Path(__file__).parents[1] / "examples" / "auth_short_bad.log"
 
 
 def test_sample_log_triggers_expected_rules() -> None:

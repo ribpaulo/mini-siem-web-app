@@ -18,21 +18,64 @@ SSH Sentinel ist eine kleine FastAPI-Webanwendung für eine Cyber-Security-Modul
 ## Projektstruktur
 
 ```text
-.
-├── main.py                 # FastAPI-App und statische Dateien
-├── routes.py               # HTML- und JSON-Endpunkte, Upload-Validierung
-├── parser.py               # Umwandlung von Logzeilen in SSH-Events
-├── detector.py             # Erkennungsregeln und Schwellenwerte
-├── scorer.py               # Score-Summe und Risiko-Level
-├── service.py              # Orchestrierung und Ergebnisaufbereitung
+modularbeit_mini_siem/
+├── main.py                     # Einstiegspunkt und FastAPI-Konfiguration
+├── routes.py                   # HTML-Routen, JSON-API und Upload-Validierung
+├── service.py                  # Verbindet Parser, Detektor und Scoring
+├── parser.py                   # Wandelt SSH-Logzeilen in strukturierte Events um
+├── detector.py                 # Erkennungsregeln und konfigurierbare Schwellenwerte
+├── scorer.py                   # Berechnet Risiko-Score und Risiko-Level
+│
 ├── models/
-│   ├── __init__.py
-│   └── analysis.py         # Pydantic-Datenmodelle
-├── templates/              # Jinja2-Seiten
-├── static/style.css        # responsives Styling
-├── examples/sample_auth.log
+│   ├── __init__.py             # Exportiert die verwendeten Datenmodelle
+│   └── analysis.py             # Pydantic-Modelle für Events und Ergebnisse
+│
+├── templates/
+│   ├── base.html               # Gemeinsames HTML-Grundgerüst
+│   ├── index.html              # Startseite mit Datei-Upload
+│   └── result.html             # Darstellung des Analyseergebnisses
+│
+├── static/
+│   ├── style.css               # Responsives Design der Weboberfläche
+│   └── upload.js               # Drag-and-drop und Browser-Validierung
+│
+├── examples/
+│   ├── auth_good.log           # Beispiel ohne auffälliges Angriffsmuster
+│   ├── auth_short_bad.log      # Kurzes Beispiel mit verdächtigen SSH-Events
+│   └── auth_long_bad.log       # Umfangreicheres Angriffsszenario
+│
 ├── tests/
-└── requirements.txt
+│   ├── test_parser.py          # Tests der unterstützten Logformate
+│   ├── test_analysis.py        # Tests der Regeln und Risikoauswertung
+│   └── test_api.py             # Tests der HTML-Seiten und JSON-API
+│
+├── requirements.txt            # Python-Abhängigkeiten mit festen Versionen
+├── README.md                   # Installation, Nutzung und Dokumentation
+└── .gitignore                  # Von Git ausgeschlossene lokale Dateien
+```
+
+### Verarbeitungskette
+
+Die Verantwortlichkeiten sind bewusst getrennt. Eine hochgeladene Datei durchläuft die Anwendung in folgender Reihenfolge:
+
+```text
+Browser / JSON-Client
+        │
+        ▼
+routes.py      Datei empfangen und validieren
+        │
+        ▼
+service.py     Analyse koordinieren
+        │
+        ├── parser.py      Logzeilen in SSH-Events umwandeln
+        ├── detector.py    verdächtige Muster erkennen
+        └── scorer.py      Risiko-Score berechnen
+        │
+        ▼
+AnalysisResult
+        │
+        ├── result.html    Ausgabe als Ergebnisseite
+        └── FastAPI       Ausgabe als JSON
 ```
 
 ## Installation und Start
@@ -43,12 +86,16 @@ Voraussetzung ist Python 3.10 oder neuer.
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
-uvicorn main:app --reload
+python -m uvicorn main:app --reload
 ```
 
 Danach ist die Oberfläche unter [http://127.0.0.1:8000](http://127.0.0.1:8000) erreichbar. Die interaktive FastAPI-Dokumentation liegt unter [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
 
-Zum Ausprobieren kann `examples/sample_auth.log` im Upload-Formular ausgewählt werden.
+Zum Ausprobieren stehen drei Dateien zur Verfügung:
+
+- `examples/auth_good.log` für eine weitgehend unauffällige Analyse
+- `examples/auth_short_bad.log` für ein kurzes Angriffsszenario
+- `examples/auth_long_bad.log` für eine umfangreichere verdächtige Aktivität
 
 ## JSON-API
 
@@ -56,7 +103,7 @@ Zum Ausprobieren kann `examples/sample_auth.log` im Upload-Formular ausgewählt 
 
 ```bash
 curl -X POST \
-  -F "log_file=@examples/sample_auth.log" \
+  -F "log_file=@examples/auth_short_bad.log" \
   http://127.0.0.1:8000/api/analyze
 ```
 
