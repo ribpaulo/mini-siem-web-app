@@ -1,0 +1,67 @@
+Jul 30 08:00:01 server CRON[1001]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 30 08:02:15 server sshd[1021]: Accepted password for paulo from 192.168.1.25 port 53421 ssh2
+Jul 30 08:02:15 server sshd[1021]: pam_unix(sshd:session): session opened for user paulo by (uid=0)
+
+Jul 30 08:45:12 server sshd[1101]: Failed password for invalid user admin from 203.0.113.45 port 42111 ssh2
+Jul 30 08:45:14 server sshd[1102]: Failed password for invalid user admin from 203.0.113.45 port 42112 ssh2
+Jul 30 08:45:15 server sshd[1103]: Failed password for invalid user admin from 203.0.113.45 port 42113 ssh2
+Jul 30 08:45:17 server sshd[1104]: Failed password for invalid user admin from 203.0.113.45 port 42114 ssh2
+Jul 30 08:45:19 server sshd[1105]: Failed password for invalid user admin from 203.0.113.45 port 42115 ssh2
+Jul 30 08:45:20 server sshd[1106]: Failed password for invalid user admin from 203.0.113.45 port 42116 ssh2
+Jul 30 08:45:22 server sshd[1107]: Failed password for invalid user admin from 203.0.113.45 port 42117 ssh2
+Jul 30 08:45:24 server sshd[1108]: Failed password for invalid user admin from 203.0.113.45 port 42118 ssh2
+Jul 30 08:45:25 server sshd[1109]: Failed password for invalid user admin from 203.0.113.45 port 42119 ssh2
+Jul 30 08:45:27 server sshd[1110]: Failed password for invalid user admin from 203.0.113.45 port 42120 ssh2
+
+Jul 30 08:45:40 server sshd[1111]: Accepted password for paulo from 203.0.113.45 port 42121 ssh2
+Jul 30 08:45:40 server sshd[1111]: pam_unix(sshd:session): session opened for user paulo by (uid=0)
+
+Jul 30 09:15:22 server sshd[1200]: Failed password for root from 198.51.100.17 port 55001 ssh2
+Jul 30 09:15:24 server sshd[1201]: Failed password for root from 198.51.100.17 port 55002 ssh2
+Jul 30 09:15:25 server sshd[1202]: Failed password for root from 198.51.100.17 port 55003 ssh2
+Jul 30 09:15:27 server sshd[1203]: Failed password for root from 198.51.100.17 port 55004 ssh2
+Jul 30 09:15:29 server sshd[1204]: Failed password for root from 198.51.100.17 port 55005 ssh2
+Jul 30 09:15:30 server sshd[1205]: Failed password for root from 198.51.100.17 port 55006 ssh2
+Jul 30 09:15:32 server sshd[1206]: Failed password for root from 198.51.100.17 port 55007 ssh2
+Jul 30 09:15:34 server sshd[1207]: Failed password for root from 198.51.100.17 port 55008 ssh2
+
+Jul 30 10:11:02 server sudo: paulo : TTY=pts/0 ; PWD=/home/paulo ; USER=root ; COMMAND=/usr/bin/systemctl restart nginx
+Jul 30 10:12:11 server sudo: paulo : TTY=pts/0 ; PWD=/home/paulo ; USER=root ; COMMAND=/usr/bin/apt update
+
+Jul 30 11:22:18 server sshd[1401]: Accepted publickey for developer from 192.168.1.55 port 52210 ssh2
+
+Jul 30 23:58:11 server sshd[2001]: Accepted password for backup from 10.0.0.20 port 60122 ssh2
+
+Jul 31 00:12:51 server sshd[2101]: Failed password for invalid user oracle from 45.77.19.88 port 41001 ssh2
+Jul 31 00:12:53 server sshd[2102]: Failed password for invalid user oracle from 45.77.19.88 port 41002 ssh2
+Jul 31 00:12:54 server sshd[2103]: Failed password for invalid user oracle from 45.77.19.88 port 41003 ssh2
+Jul 31 00:12:56 server sshd[2104]: Failed password for invalid user oracle from 45.77.19.88 port 41004 ssh2
+Jul 31 00:12:58 server sshd[2105]: Failed password for invalid user oracle from 45.77.19.88 port 41005 ssh2
+Jul 31 00:13:00 server sshd[2106]: Failed password for invalid user oracle from 45.77.19.88 port 41006 ssh2
+Jul 31 00:13:02 server sshd[2107]: Failed password for invalid user oracle from 45.77.19.88 port 41007 ssh2
+Jul 31 00:13:04 server sshd[2108]: Failed password for invalid user oracle from 45.77.19.88 port 41008 ssh2
+
+Jul 31 00:13:15 server sshd[2110]: Accepted password for root from 45.77.19.88 port 41009 ssh2
+
+Jul 31 02:14:10 server sshd[2300]: Accepted password for root from 198.18.0.10 port 50110 ssh2
+
+Jul 31 07:45:33 server sshd[3000]: Failed password for invalid user test from 91.200.12.66 port 45511 ssh2
+Jul 31 07:45:34 server sshd[3001]: Failed password for invalid user test from 91.200.12.66 port 45512 ssh2
+Jul 31 07:45:36 server sshd[3002]: Failed password for invalid user test from 91.200.12.66 port 45513 ssh2
+Jul 31 07:45:37 server sshd[3003]: Failed password for invalid user test from 91.200.12.66 port 45514 ssh2
+
+Jul 31 08:10:41 server sshd[3200]: Accepted password for paulo from 192.168.1.25 port 60010 ssh2
+Jul 31 08:10:42 server sshd[3200]: pam_unix(sshd:session): session opened for user paulo by (uid=0)
+
+Jul 31 08:55:17 server sshd[3500]: Failed password for invalid user mysql from 185.220.101.10 port 34561 ssh2
+Jul 31 08:55:18 server sshd[3501]: Failed password for invalid user mysql from 185.220.101.10 port 34562 ssh2
+Jul 31 08:55:19 server sshd[3502]: Failed password for invalid user mysql from 185.220.101.10 port 34563 ssh2
+Jul 31 08:55:20 server sshd[3503]: Failed password for invalid user mysql from 185.220.101.10 port 34564 ssh2
+Jul 31 08:55:21 server sshd[3504]: Failed password for invalid user mysql from 185.220.101.10 port 34565 ssh2
+Jul 31 08:55:22 server sshd[3505]: Failed password for invalid user mysql from 185.220.101.10 port 34566 ssh2
+Jul 31 08:55:24 server sshd[3506]: Failed password for invalid user mysql from 185.220.101.10 port 34567 ssh2
+
+Jul 31 09:00:11 server sshd[3600]: Accepted password for admin from 185.220.101.10 port 34568 ssh2
+
+Jul 31 09:30:55 server systemd[1]: Started Daily apt download activities.
+Jul 31 09:31:10 server CRON[4100]: (root) CMD (backup.sh)

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Analyse · {{ result.filename }}{% endblock %}
+{% block content %}
+<section class="result-header">
+    <div>
+        <a class="back-link" href="/">← Neue Analyse</a>
+        <p class="eyebrow">Analyse abgeschlossen</p>
+        <h1>{{ result.filename }}</h1>
+    </div>
+    <div class="risk-orb risk-{{ result.risk_level|lower }}">
+        <span>Risiko-Score</span>
+        <strong>{{ result.risk_score }}</strong>
+        <small>/ 100 · {{ result.risk_level }}</small>
+    </div>
+</section>
+
+<section class="metrics">
+    <article><span>Events</span><strong>{{ result.parsed_events }}</strong><small>aus {{ result.total_lines }} Zeilen</small></article>
+    <article><span>Fehlgeschlagen</span><strong>{{ result.failed_logins }}</strong><small>Login-Versuche</small></article>
+    <article><span>Erfolgreich</span><strong>{{ result.successful_logins }}</strong><small>Login-Versuche</small></article>
+    <article class="{{ 'alarm-on' if result.alert else 'alarm-off' }}"><span>Alarmstatus</span><strong>{{ 'AKTIV' if result.alert else 'NORMAL' }}</strong><small>{{ result.findings|length }} Regel-Treffer</small></article>
+</section>
+
+<section class="panel">
+    <div class="section-heading"><div><p class="eyebrow">Erkennung</p><h2>Ausgelöste Regeln</h2></div></div>
+    {% if result.findings %}
+    <div class="finding-list">
+        {% for finding in result.findings %}
+        <article class="finding severity-{{ finding.severity }}">
+            <span class="severity">{{ finding.severity }}</span>
+            <div><h3>{{ finding.title }}</h3><p>{{ finding.description }}</p></div>
+            <strong>+{{ finding.points }}</strong>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">Keine der konfigurierten Erkennungsregeln wurde ausgelöst.</div>
+    {% endif %}
+</section>
+
+<div class="two-column">
+    <section class="panel">
+        <p class="eyebrow">Quellen</p><h2>Verdächtige IPs</h2>
+        {% if result.suspicious_ips %}
+        <div class="table-wrap"><table><thead><tr><th>IP-Adresse</th><th>Versuche</th><th>Fehler</th></tr></thead><tbody>
+        {% for item in result.suspicious_ips %}<tr><td><code>{{ item.value }}</code></td><td>{{ item.attempts }}</td><td>{{ item.failed_attempts }}</td></tr>{% endfor %}
+        </tbody></table></div>
+        {% else %}<p class="muted">Keine verdächtigen IP-Adressen.</p>{% endif %}
+    </section>
+    <section class="panel">
+        <p class="eyebrow">Konten</p><h2>Verdächtige Benutzer</h2>
+        {% if result.suspicious_users %}
+        <div class="table-wrap"><table><thead><tr><th>Benutzer</th><th>Versuche</th><th>Fehler</th></tr></thead><tbody>
+        {% for item in result.suspicious_users %}<tr><td><code>{{ item.value }}</code></td><td>{{ item.attempts }}</td><td>{{ item.failed_attempts }}</td></tr>{% endfor %}
+        </tbody></table></div>
+        {% else %}<p class="muted">Keine verdächtigen Benutzer.</p>{% endif %}
+    </section>
+</div>
+
+<section class="panel">
+    <div class="section-heading"><div><p class="eyebrow">Beweismittel</p><h2>Markierte Logzeilen</h2></div><span class="count-badge">{{ result.marked_lines|length }}</span></div>
+    {% if result.marked_lines %}
+    <div class="log-view">
+        {% for line in result.marked_lines %}
+        <div class="log-line"><span class="line-no">{{ line.line_number }}</span><code>{{ line.content }}</code><span class="line-reason">{{ line.reasons|join(', ') }}</span></div>
+        {% endfor %}
+    </div>
+    {% else %}<div class="empty-state">Keine Logzeilen mussten markiert werden.</div>{% endif %}
+</section>
+
+<section class="panel score-panel">
+    <div><p class="eyebrow">Bewertung</p><h2>Punkteberechnung</h2></div>
+    <div class="score-list">
+        {% for item in result.score_breakdown %}<div><span>{{ item.label }}</span><strong>+{{ item.points }}</strong></div>{% endfor %}
+        <div class="score-total"><span>Gesamtrisiko (max. 100)</span><strong>{{ result.risk_score }}</strong></div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}SSH Sentinel{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="/" aria-label="Zur Startseite">
+            <span class="brand-mark">S</span>
+            <span>SSH Sentinel <small>Mini-SIEM</small></span>
+        </a>
+        <span class="demo-label">DEMO-ANALYSE</span>
+    </header>
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+    <footer>Lokale Demo-Auswertung · Keine Daten werden dauerhaft gespeichert</footer>
+</body>
+</html>

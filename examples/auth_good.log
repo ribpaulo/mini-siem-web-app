@@ -1,0 +1,60 @@
+Jul 30 07:58:01 server systemd[1]: Started Daily apt download activities.
+Jul 30 08:00:01 server CRON[1001]: (root) CMD (run-parts /etc/cron.hourly)
+
+Jul 30 08:05:12 server sshd[1101]: Accepted publickey for paulo from 192.168.1.25 port 52101 ssh2
+Jul 30 08:05:12 server sshd[1101]: pam_unix(sshd:session): session opened for user paulo by (uid=0)
+
+Jul 30 08:10:33 server sudo: paulo : TTY=pts/0 ; PWD=/home/paulo ; USER=root ; COMMAND=/usr/bin/systemctl status nginx
+
+Jul 30 08:30:45 server sshd[1150]: Accepted publickey for developer from 192.168.1.55 port 52210 ssh2
+Jul 30 08:30:45 server sshd[1150]: pam_unix(sshd:session): session opened for user developer by (uid=0)
+
+Jul 30 09:00:01 server CRON[1200]: (root) CMD (backup.sh)
+
+Jul 30 09:15:18 server sudo: developer : TTY=pts/1 ; PWD=/var/www ; USER=root ; COMMAND=/usr/bin/systemctl restart apache2
+
+Jul 30 09:30:12 server sshd[1300]: Accepted publickey for backup from 10.0.0.20 port 60011 ssh2
+Jul 30 09:30:12 server sshd[1300]: pam_unix(sshd:session): session opened for user backup by (uid=0)
+
+Jul 30 10:00:01 server CRON[1400]: (root) CMD (logrotate)
+
+Jul 30 10:25:44 server sshd[1450]: Accepted publickey for paulo from 192.168.1.25 port 52145 ssh2
+Jul 30 10:25:44 server sshd[1450]: pam_unix(sshd:session): session opened for user paulo by (uid=0)
+
+Jul 30 10:40:10 server sudo: paulo : TTY=pts/0 ; PWD=/home/paulo ; USER=root ; COMMAND=/usr/bin/apt update
+
+Jul 30 11:00:01 server CRON[1500]: (root) CMD (run-parts /etc/cron.hourly)
+
+Jul 30 11:20:55 server sshd[1600]: Accepted publickey for developer from 192.168.1.55 port 52300 ssh2
+Jul 30 11:20:55 server sshd[1600]: pam_unix(sshd:session): session opened for user developer by (uid=0)
+
+Jul 30 12:00:01 server CRON[1700]: (root) CMD (backup.sh)
+
+Jul 30 12:35:18 server sshd[1750]: Accepted publickey for paulo from 192.168.1.25 port 52180 ssh2
+Jul 30 12:35:18 server sshd[1750]: pam_unix(sshd:session): session opened for user paulo by (uid=0)
+
+Jul 30 13:00:01 server CRON[1800]: (root) CMD (run-parts /etc/cron.hourly)
+
+Jul 30 13:22:47 server sudo: developer : TTY=pts/1 ; PWD=/var/www ; USER=root ; COMMAND=/usr/bin/journalctl -xe
+
+Jul 30 14:05:33 server sshd[1900]: Accepted publickey for backup from 10.0.0.20 port 60055 ssh2
+Jul 30 14:05:33 server sshd[1900]: pam_unix(sshd:session): session opened for user backup by (uid=0)
+
+Jul 30 15:00:01 server CRON[2000]: (root) CMD (backup.sh)
+
+Jul 30 15:30:28 server sshd[2100]: Accepted publickey for paulo from 192.168.1.25 port 52230 ssh2
+Jul 30 15:30:28 server sshd[2100]: pam_unix(sshd:session): session opened for user paulo by (uid=0)
+
+Jul 30 16:00:01 server CRON[2200]: (root) CMD (run-parts /etc/cron.hourly)
+
+Jul 30 16:12:16 server sudo: paulo : TTY=pts/0 ; PWD=/home/paulo ; USER=root ; COMMAND=/usr/bin/systemctl reload nginx
+
+Jul 30 16:45:11 server sshd[2250]: Accepted publickey for developer from 192.168.1.55 port 52400 ssh2
+Jul 30 16:45:11 server sshd[2250]: pam_unix(sshd:session): session opened for user developer by (uid=0)
+
+Jul 30 17:00:01 server CRON[2300]: (root) CMD (backup.sh)
+
+Jul 30 17:40:59 server sshd[2400]: Accepted publickey for paulo from 192.168.1.25 port 52290 ssh2
+Jul 30 17:40:59 server sshd[2400]: pam_unix(sshd:session): session opened for user paulo by (uid=0)
+
+Jul 30 18:00:01 server systemd[1]: Started Daily Cleanup of Temporary Directories.
