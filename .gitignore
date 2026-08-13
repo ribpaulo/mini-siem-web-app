@@ -6,3 +6,6 @@ venv/
 .env
 htmlcov/
 .coverage
+build/
+dist/
+*.manifest

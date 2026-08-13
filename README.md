@@ -14,17 +14,21 @@ SSH Sentinel ist eine kleine FastAPI-Webanwendung für eine Cyber-Security-Modul
 - markierte Originalzeilen inklusive Markierungsgrund
 - HTML-Oberfläche und JSON-API mit derselben Analyse-Logik
 - Beispieldatei und automatisierte Tests
+- eigenständiger PyInstaller-Build für Linux und Windows
+- lokaler Launcher mit automatischem Browserstart und Portprüfung
 
 ## Projektstruktur
 
 ```text
 modularbeit_mini_siem/
 ├── main.py                     # Einstiegspunkt und FastAPI-Konfiguration
+├── launcher.py                 # Startet Server und Browser im Executable-Modus
 ├── routes.py                   # HTML-Routen, JSON-API und Upload-Validierung
 ├── service.py                  # Verbindet Parser, Detektor und Scoring
 ├── parser.py                   # Wandelt SSH-Logzeilen in strukturierte Events um
 ├── detector.py                 # Erkennungsregeln und konfigurierbare Schwellenwerte
 ├── scorer.py                   # Berechnet Risiko-Score und Risiko-Level
+├── ssh-sentinel.spec           # Plattformübergreifende PyInstaller-Konfiguration
 │
 ├── models/
 │   ├── __init__.py             # Exportiert die verwendeten Datenmodelle
@@ -47,7 +51,12 @@ modularbeit_mini_siem/
 ├── tests/
 │   ├── test_parser.py          # Tests der unterstützten Logformate
 │   ├── test_analysis.py        # Tests der Regeln und Risikoauswertung
-│   └── test_api.py             # Tests der HTML-Seiten und JSON-API
+│   ├── test_api.py             # Tests der HTML-Seiten und JSON-API
+│   └── test_launcher.py        # Tests für Startparameter und Portprüfung
+│
+├── scripts/
+│   ├── build_linux.sh          # Erstellt das Linux-Executable
+│   └── build_windows.ps1       # Erstellt die Windows-EXE
 │
 ├── requirements.txt            # Python-Abhängigkeiten mit festen Versionen
 ├── README.md                   # Installation, Nutzung und Dokumentation
@@ -78,18 +87,142 @@ AnalysisResult
         └── FastAPI       Ausgabe als JSON
 ```
 
-## Installation und Start
+## Entwicklungsumgebung einrichten
 
 Voraussetzung ist Python 3.10 oder neuer.
+
+### Linux
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
+```
+
+### Windows PowerShell
+
+```powershell
+py -3.10 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+```
+
+Falls PowerShell das Aktivierungsskript blockiert, kann für das aktuelle Fenster vorübergehend folgende Einstellung verwendet werden:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+
+## Anwendung während der Entwicklung starten
+
+Mit automatischem Browserstart:
+
+```bash
+python launcher.py
+```
+
+Alternativ als normaler Uvicorn-Entwicklungsserver mit automatischem Reload:
+
+```bash
 python -m uvicorn main:app --reload
 ```
 
 Danach ist die Oberfläche unter [http://127.0.0.1:8000](http://127.0.0.1:8000) erreichbar. Die interaktive FastAPI-Dokumentation liegt unter [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
+
+Optionen des Launchers:
+
+```bash
+python launcher.py --port 8001
+python launcher.py --no-browser
+python launcher.py --help
+```
+
+Die Anwendung wird absichtlich nur an `127.0.0.1` gebunden und ist damit standardmässig nicht aus dem Netzwerk erreichbar. Falls Port 8000 bereits belegt ist, beendet sich der Launcher mit einer verständlichen Meldung und schlägt einen anderen Port vor.
+
+## Eigenständiges Executable erstellen
+
+Die Anwendung wird mit PyInstaller als einzelne ausführbare Datei verpackt. Python, FastAPI und die übrigen Python-Pakete werden zum Starten des fertigen Programms nicht mehr benötigt. Die Jinja2-Templates, das CSS und das Drag-and-drop-JavaScript sind im Executable enthalten.
+
+Das Programm bleibt technisch eine lokale Webanwendung: Beim Start wird im Hintergrund ein lokaler FastAPI-Server geöffnet und anschliessend die Oberfläche im Standardbrowser angezeigt.
+
+### Linux-Build
+
+Der Build muss auf einem Linux-System erstellt werden:
+
+```bash
+source .venv/bin/activate
+./scripts/build_linux.sh
+```
+
+Das Ergebnis befindet sich danach hier:
+
+```text
+dist/ssh-sentinel
+```
+
+Starten:
+
+```bash
+./dist/ssh-sentinel
+```
+
+Falls die Ausführungsberechtigung beim Kopieren verloren gegangen ist:
+
+```bash
+chmod +x dist/ssh-sentinel
+```
+
+### Windows-Build
+
+Der Windows-Build muss unter Windows ausgeführt werden. In PowerShell:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1
+```
+
+Das Ergebnis befindet sich danach hier:
+
+```text
+dist\ssh-sentinel.exe
+```
+
+Starten:
+
+```powershell
+.\dist\ssh-sentinel.exe
+```
+
+Die EXE kann auch per Doppelklick gestartet werden. Zum Beenden wird im Konsolenfenster `Ctrl+C` gedrückt oder das Fenster geschlossen.
+
+### Optionen des fertigen Programms
+
+Linux:
+
+```bash
+./dist/ssh-sentinel --port 8001
+./dist/ssh-sentinel --no-browser
+```
+
+Windows:
+
+```powershell
+.\dist\ssh-sentinel.exe --port 8001
+.\dist\ssh-sentinel.exe --no-browser
+```
+
+### Wichtiger Hinweis zum Betriebssystem
+
+PyInstaller ist kein Cross-Compiler. Die ausführbare Datei muss auf dem Zielbetriebssystem gebaut werden:
+
+| Build-System | Ergebnis |
+|---|---|
+| Linux | `ssh-sentinel` für Linux |
+| Windows | `ssh-sentinel.exe` für Windows |
+
+Ein unter Linux erstelltes Programm kann nicht direkt unter Windows ausgeführt werden und umgekehrt. Für beide Varianten werden daher derselbe `ssh-sentinel.spec` und zwei betriebssystemspezifische Build-Skripte bereitgestellt.
+
+Die Verzeichnisse `build/` und `dist/` werden automatisch erzeugt und sind in `.gitignore` eingetragen. Sie können jederzeit gelöscht und durch einen neuen Build wiederhergestellt werden.
 
 Zum Ausprobieren stehen drei Dateien zur Verfügung:
 
@@ -151,10 +284,10 @@ Nicht erkannte Zeilen bleiben unberücksichtigt, zählen aber in der Anzeige der
 ## Tests
 
 ```bash
-pytest -q
+python -m pytest -q
 ```
 
-Die Tests decken Parser-Varianten, die Beispielanalyse, einen unauffälligen Log sowie HTML- und JSON-Endpunkte ab.
+Die zehn Tests decken Parser-Varianten, die Beispielanalyse, einen unauffälligen Log, HTML- und JSON-Endpunkte sowie den lokalen Launcher ab.
 
 ## Erweiterungsmöglichkeiten
 
