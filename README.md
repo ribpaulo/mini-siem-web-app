@@ -9,7 +9,7 @@ SSH Sentinel ist eine kleine FastAPI-Webanwendung für eine Cyber-Security-Modul
 - Drag-and-drop oder Dateiauswahl für UTF-8-Dateien mit `.log` oder `.txt` (maximal 2 MB)
 - Parser für fehlgeschlagene, ungültige und erfolgreiche SSH-Anmeldungen
 - Unterstützung für IPv4, IPv6, Syslog- und ISO-Zeitstempel
-- regelbasierte Erkennung verdächtiger IP-Adressen und Benutzer
+- regelbasierte Erkennung verdächtiger IP-Adressen und Benutzernamen
 - Risiko-Score von 0 bis 100 mit detaillierter Punkteaufschlüsselung
 - markierte Originalzeilen inklusive Markierungsgrund
 - HTML-Oberfläche und JSON-API mit derselben Analyse-Logik
@@ -43,7 +43,7 @@ modularbeit_mini_siem/
 ├── parser.py                   # Wandelt SSH-Logzeilen in strukturierte Events um
 ├── detector.py                 # Erkennungsregeln und definierte Schwellenwerte
 ├── scorer.py                   # Berechnet Risiko-Score und Risiko-Level
-├── ssh-sentinel.spec           # Plattformübergreifende PyInstaller-Konfiguration
+├── ssh-sentinel.spec           # Gemeinsame PyInstaller-Konfiguration für Linux und Windows
 │
 ├── models/
 │   ├── __init__.py             # Exportiert die verwendeten Datenmodelle
@@ -302,7 +302,7 @@ Nicht erkannte Zeilen bleiben unberücksichtigt, zählen aber in der Anzeige der
 python -m pytest -q
 ```
 
-Die zehn Tests decken Parser-Varianten, die Beispielanalyse, einen unauffälligen Log, HTML- und JSON-Endpunkte sowie den lokalen Launcher ab.
+Die Tests decken Parser-Varianten, die Beispielanalyse, einen unauffälligen Log, HTML- und JSON-Endpunkte sowie den lokalen Launcher ab.
 
 ## Erweiterungsmöglichkeiten
 
