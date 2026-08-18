@@ -13,9 +13,24 @@ SSH Sentinel ist eine kleine FastAPI-Webanwendung für eine Cyber-Security-Modul
 - Risiko-Score von 0 bis 100 mit detaillierter Punkteaufschlüsselung
 - markierte Originalzeilen inklusive Markierungsgrund
 - HTML-Oberfläche und JSON-API mit derselben Analyse-Logik
-- Beispieldatei und automatisierte Tests
+- Beispieldateien und automatisierte Tests
 - eigenständiger PyInstaller-Build für Linux und Windows
 - lokaler Launcher mit automatischem Browserstart und Portprüfung
+
+## Schnellstart
+
+```bash
+git clone https://github.com/ribpaulo/mini-siem-web-app.git
+cd mini-siem-web-app
+
+python3 -m venv .venv
+source .venv/bin/activate
+
+python -m pip install -r requirements.txt
+python launcher.py
+```
+
+Anschliessend ist SSH Sentinel unter `http://127.0.0.1:8000` erreichbar.
 
 ## Projektstruktur
 
@@ -26,7 +41,7 @@ modularbeit_mini_siem/
 ├── routes.py                   # HTML-Routen, JSON-API und Upload-Validierung
 ├── service.py                  # Verbindet Parser, Detektor und Scoring
 ├── parser.py                   # Wandelt SSH-Logzeilen in strukturierte Events um
-├── detector.py                 # Erkennungsregeln und konfigurierbare Schwellenwerte
+├── detector.py                 # Erkennungsregeln und definierte Schwellenwerte
 ├── scorer.py                   # Berechnet Risiko-Score und Risiko-Level
 ├── ssh-sentinel.spec           # Plattformübergreifende PyInstaller-Konfiguration
 │
@@ -103,15 +118,12 @@ python -m pip install -r requirements.txt
 
 ```powershell
 py -3.10 -m venv .venv
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 ```
 
-Falls PowerShell das Aktivierungsskript blockiert, kann für das aktuelle Fenster vorübergehend folgende Einstellung verwendet werden:
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-```
+Die Änderung der Execution Policy gilt nur für die aktuelle PowerShell-Sitzung und wird nach dem Schliessen des Fensters nicht dauerhaft übernommen.
 
 ## Anwendung während der Entwicklung starten
 
@@ -141,7 +153,7 @@ Die Anwendung wird absichtlich nur an `127.0.0.1` gebunden und ist damit standar
 
 ## Eigenständiges Executable erstellen
 
-Die Anwendung wird mit PyInstaller als einzelne ausführbare Datei verpackt. Python, FastAPI und die übrigen Python-Pakete werden zum Starten des fertigen Programms nicht mehr benötigt. Die Jinja2-Templates, das CSS und das Drag-and-drop-JavaScript sind im Executable enthalten.
+Die Anwendung wird mit PyInstaller als einzelne ausführbare Datei verpackt. Für die Ausführung des mit PyInstaller erstellten Programms ist auf dem Zielsystem keine separate Python-Installation und keine manuelle Installation der in requirements.txt aufgeführten Python-Pakete erforderlich. Die Jinja2-Templates, das CSS und das Drag-and-drop-JavaScript sind im Executable enthalten.
 
 Das Programm bleibt technisch eine lokale Webanwendung: Beim Start wird im Hintergrund ein lokaler FastAPI-Server geöffnet und anschliessend die Oberfläche im Standardbrowser angezeigt.
 
@@ -151,6 +163,7 @@ Der Build muss auf einem Linux-System erstellt werden:
 
 ```bash
 source .venv/bin/activate
+chmod +x scripts/build_linux.sh
 ./scripts/build_linux.sh
 ```
 
@@ -261,6 +274,8 @@ Die Punkte aller Treffer werden addiert. Der ausgegebene Gesamtscore wird bei 10
 | 20–49 | MITTEL |
 | 50–74 | HOCH |
 | 75–100 | KRITISCH |
+
+Hinweis: Die verwendeten Schwellenwerte und Risikopunkte sind Heuristiken für diese Demonstrationsanwendung und entsprechen keinem offiziellen Cybersecurity- oder SIEM-Standard.
 
 Der Alarmstatus ist aktiv, sobald mindestens eine Regel ausgelöst wurde. Deshalb kann ein einzelner Regel-Treffer mit weniger als 20 Punkten bereits einen Alarm bei niedrigem Gesamtrisiko erzeugen.
 
