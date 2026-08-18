@@ -7,7 +7,7 @@ SSH Sentinel ist eine kleine FastAPI-Webanwendung für eine Cyber-Security-Modul
 ## Funktionsumfang
 
 - Drag-and-drop oder Dateiauswahl für UTF-8-Dateien mit `.log` oder `.txt` (maximal 2 MB)
-- Parser für fehlgeschlagene, ungültige und erfolgreiche SSH-Anmeldungen
+- Parser für fehlgeschlagene und erfolgreiche SSH-Anmeldungen sowie ungültige Benutzernamen
 - Unterstützung für IPv4, IPv6, Syslog- und ISO-Zeitstempel
 - regelbasierte Erkennung verdächtiger IP-Adressen und Benutzernamen
 - Risiko-Score von 0 bis 100 mit detaillierter Punkteaufschlüsselung
@@ -17,7 +17,7 @@ SSH Sentinel ist eine kleine FastAPI-Webanwendung für eine Cyber-Security-Modul
 - eigenständiger PyInstaller-Build für Linux und Windows
 - lokaler Launcher mit automatischem Browserstart und Portprüfung
 
-## Schnellstart
+## Schnellstart unter Linux
 
 ```bash
 git clone https://github.com/ribpaulo/mini-siem-web-app.git
@@ -26,6 +26,7 @@ cd mini-siem-web-app
 python3 -m venv .venv
 source .venv/bin/activate
 
+python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 python launcher.py
 ```
@@ -35,9 +36,9 @@ Anschliessend ist SSH Sentinel unter `http://127.0.0.1:8000` erreichbar.
 ## Projektstruktur
 
 ```text
-modularbeit_mini_siem/
+mini-siem-web-app/
 ├── main.py                     # Einstiegspunkt und FastAPI-Konfiguration
-├── launcher.py                 # Startet Server und Browser im Executable-Modus
+├── launcher.py                 # Startet den lokalen Server und Browser
 ├── routes.py                   # HTML-Routen, JSON-API und Upload-Validierung
 ├── service.py                  # Verbindet Parser, Detektor und Scoring
 ├── parser.py                   # Wandelt SSH-Logzeilen in strukturierte Events um
@@ -151,7 +152,7 @@ python launcher.py --help
 
 Die Anwendung wird absichtlich nur an `127.0.0.1` gebunden und ist damit standardmässig nicht aus dem Netzwerk erreichbar. Falls Port 8000 bereits belegt ist, beendet sich der Launcher mit einer verständlichen Meldung und schlägt einen anderen Port vor.
 
-## Eigenständiges Executable erstellen
+## Eigenständige ausführbare Datei erstellen
 
 Die Anwendung wird mit PyInstaller als einzelne ausführbare Datei verpackt. Für die Ausführung des mit PyInstaller erstellten Programms ist auf dem Zielsystem keine separate Python-Installation und keine manuelle Installation der in requirements.txt aufgeführten Python-Pakete erforderlich. Die Jinja2-Templates, das CSS und das Drag-and-drop-JavaScript sind im Executable enthalten.
 
@@ -163,6 +164,7 @@ Der Build muss auf einem Linux-System erstellt werden:
 
 ```bash
 source .venv/bin/activate
+python -m pytest -q
 chmod +x scripts/build_linux.sh
 ./scripts/build_linux.sh
 ```
@@ -191,6 +193,7 @@ Der Windows-Build muss unter Windows ausgeführt werden. In PowerShell:
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
+python -m pytest -q
 powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1
 ```
 
@@ -236,6 +239,8 @@ PyInstaller ist kein Cross-Compiler. Die ausführbare Datei muss auf dem Zielbet
 Ein unter Linux erstelltes Programm kann nicht direkt unter Windows ausgeführt werden und umgekehrt. Für beide Varianten werden daher derselbe `ssh-sentinel.spec` und zwei betriebssystemspezifische Build-Skripte bereitgestellt.
 
 Die Verzeichnisse `build/` und `dist/` werden automatisch erzeugt und sind in `.gitignore` eingetragen. Sie können jederzeit gelöscht und durch einen neuen Build wiederhergestellt werden.
+
+## Beispieldateien
 
 Zum Ausprobieren stehen drei Dateien zur Verfügung:
 
